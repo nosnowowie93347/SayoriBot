@@ -15,6 +15,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 
+from helpers import checks
 
 class General(commands.Cog, name="general"):
     def __init__(self, bot) -> None:
@@ -71,8 +72,18 @@ class General(commands.Cog, name="general"):
     @commands.hybrid_command(
         name="help", description="List all commands the bot has loaded."
     )
+    
     async def help(self, context: Context) -> None:
         prefix = self.bot.config["prefix"]
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         embed = discord.Embed(
             title="Help", description="List of available commands:", color=0xBEBEFE
         )
@@ -101,12 +112,21 @@ class General(commands.Cog, name="general"):
 
         :param context: The hybrid command context.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         embed = discord.Embed(
-            description="Used [Krypton's](https://krypton.ninja) template",
+            description="Just a bot.",
             color=0xBEBEFE,
         )
         embed.set_author(name="Bot Information")
-        embed.add_field(name="Owner:", value="Krypton#7331", inline=True)
+        embed.add_field(name="Hello there!", value="I am a bot.", inline=True)
         embed.add_field(
             name="Python Version:", value=f"{platform.python_version()}", inline=True
         )
@@ -115,7 +135,7 @@ class General(commands.Cog, name="general"):
             value=f"/ (Slash Commands) or {self.bot.config['prefix']} for normal commands",
             inline=False,
         )
-        embed.set_footer(text=f"Requested by {context.author}")
+        embed.set_footer(text=f"Requested by {context.author.id}")
         await context.send(embed=embed)
 
     @commands.hybrid_command(
@@ -128,6 +148,15 @@ class General(commands.Cog, name="general"):
 
         :param context: The hybrid command context.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         roles = [role.name for role in context.guild.roles]
         if len(roles) > 50:
             roles = roles[:50]
@@ -158,6 +187,15 @@ class General(commands.Cog, name="general"):
 
         :param context: The hybrid command context.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         embed = discord.Embed(
             title="🏓 Pong!",
             description=f"The bot latency is {round(self.bot.latency * 1000)}ms.",
@@ -175,6 +213,15 @@ class General(commands.Cog, name="general"):
 
         :param context: The hybrid command context.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         embed = discord.Embed(
             description=f"Invite me by clicking [here]({self.bot.config['invite_link']}).",
             color=0xD75BF4,
@@ -195,6 +242,15 @@ class General(commands.Cog, name="general"):
 
         :param context: The hybrid command context.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         embed = discord.Embed(
             description=f"Join the support server for the bot by clicking [here](https://discord.gg/mTBrXyWxAF).",
             color=0xD75BF4,
@@ -217,6 +273,15 @@ class General(commands.Cog, name="general"):
         :param context: The hybrid command context.
         :param question: The question that should be asked by the user.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         answers = [
             "It is certain.",
             "It is decidedly so.",
@@ -258,6 +323,15 @@ class General(commands.Cog, name="general"):
         :param context: The hybrid command context.
         """
         # This will prevent your bot from stopping everything when doing a web request - see: https://discordpy.readthedocs.io/en/stable/faq.html#how-do-i-make-a-web-request
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 "https://api.coindesk.com/v1/bpi/currentprice/BTC.json"

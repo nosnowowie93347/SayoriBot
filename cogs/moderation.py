@@ -8,7 +8,6 @@ Version: 6.1.0
 
 import os
 from datetime import datetime
-
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -18,7 +17,6 @@ from discord.ext.commands import Context
 class Moderation(commands.Cog, name="moderation"):
     def __init__(self, bot) -> None:
         self.bot = bot
-
     @commands.hybrid_command(
         name="kick",
         description="Kick a user out of the server.",
@@ -39,6 +37,15 @@ class Moderation(commands.Cog, name="moderation"):
         :param user: The user that should be kicked from the server.
         :param reason: The reason for the kick. Default is "Not specified".
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
         )
@@ -90,6 +97,15 @@ class Moderation(commands.Cog, name="moderation"):
         :param user: The user that should have its nickname changed.
         :param nickname: The new nickname of the user. Default is None, which will reset the nickname.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
         )
@@ -127,6 +143,15 @@ class Moderation(commands.Cog, name="moderation"):
         :param user: The user that should be banned from the server.
         :param reason: The reason for the ban. Default is "Not specified".
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
         )
@@ -170,6 +195,15 @@ class Moderation(commands.Cog, name="moderation"):
 
         :param context: The hybrid command context.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         if context.invoked_subcommand is None:
             embed = discord.Embed(
                 description="Please specify a subcommand.\n\n**Subcommands:**\n`add` - Add a warning to a user.\n`remove` - Remove a warning from a user.\n`list` - List all warnings of a user.",
@@ -196,6 +230,15 @@ class Moderation(commands.Cog, name="moderation"):
         :param user: The user that should be warned.
         :param reason: The reason for the warn. Default is "Not specified".
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
         )
@@ -237,6 +280,15 @@ class Moderation(commands.Cog, name="moderation"):
         :param user: The user that should get their warning removed.
         :param warn_id: The ID of the warning that should be removed.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
         )
@@ -260,6 +312,15 @@ class Moderation(commands.Cog, name="moderation"):
         :param context: The hybrid command context.
         :param user: The user you want to get the warnings of.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         warnings_list = await self.bot.database.get_warnings(user.id, context.guild.id)
         embed = discord.Embed(title=f"Warnings of {user}", color=0xBEBEFE)
         description = ""
@@ -285,6 +346,15 @@ class Moderation(commands.Cog, name="moderation"):
         :param context: The hybrid command context.
         :param amount: The number of messages that should be deleted.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         await context.send(
             "Deleting messages..."
         )  # Bit of a hacky way to make sure the bot responds to the interaction and doens't get a "Unknown Interaction" response
@@ -315,6 +385,15 @@ class Moderation(commands.Cog, name="moderation"):
         :param user_id: The ID of the user that should be banned.
         :param reason: The reason for the ban. Default is "Not specified".
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         try:
             await self.bot.http.ban(user_id, context.guild.id, reason=reason)
             user = self.bot.get_user(int(user_id)) or await self.bot.fetch_user(
@@ -347,6 +426,15 @@ class Moderation(commands.Cog, name="moderation"):
 
         :param limit: The limit of messages that should be archived. Default is 10.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         log_file = f"{context.channel.id}.log"
         with open(log_file, "w", encoding="UTF-8") as f:
             f.write(
@@ -369,6 +457,7 @@ class Moderation(commands.Cog, name="moderation"):
         f = discord.File(log_file)
         await context.send(file=f)
         os.remove(log_file)
+
 
 
 async def setup(bot) -> None:

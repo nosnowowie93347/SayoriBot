@@ -13,6 +13,61 @@ import aiosqlite
 class DatabaseManager:
     def __init__(self, *, connection: aiosqlite.Connection) -> None:
         self.connection = connection
+    async def get_blacklisted_users(self) -> list:
+        """
+        This function will return the list of all blacklisted users.
+
+        :param user_id: The ID of the user that should be checked.
+        :return: True if the user is blacklisted, False if not.
+        """
+        rows = await self.connection.execute("SELECT user_id, strftime('%s', created_at) FROM blacklist",
+                
+            )
+        async with rows as cursor:
+            result = await cursor.fetchall()
+            result_list = []
+            for row in result:
+                result_list.append(row)
+            
+            return result_list
+
+    async def is_blacklisted(self,user_id: int) -> bool:
+        """
+        This function will check if a user is blacklisted.
+
+        :param user_id: The ID of the user that should be checked.
+        :return: True if the user is blacklisted, False if not.
+        """
+        async with self.connection.execute("SELECT * FROM blacklist WHERE user_id=?", (user_id,)) as cursor:
+            result = await cursor.fetchone()
+            return result is not None
+
+
+    async def add_user_to_blacklist(self,user_id: int) -> int:
+        """
+        This function will add a user based on its ID in the blacklist.
+
+        :param user_id: The ID of the user that should be added into the blacklist.
+        """
+        await self.connection.execute("INSERT INTO blacklist(user_id) VALUES (?)", (user_id,))
+        await self.connection.commit()
+        rows = await self.connection.execute("SELECT COUNT(*) FROM blacklist")
+        async with rows as cursor:
+            result = await cursor.fetchone()
+            return result[0] if result is not None else 0        
+
+    async def remove_user_from_blacklist(self,user_id: int) -> int:
+        """
+        This function will add a user based on its ID in the blacklist.
+
+        :param user_id: The ID of the user that should be added into the blacklist.
+        """
+        await self.connection.execute("DELETE FROM blacklist WHERE user_id=?", (user_id,))
+        await self.connection.commit()
+        rows = await self.connection.execute("SELECT COUNT(*) FROM blacklist")
+        async with rows as cursor:
+            result = await cursor.fetchone()
+            return result[0] if result is not None else 0      
 
     async def add_warn(
         self, user_id: int, server_id: int, moderator_id: int, reason: str

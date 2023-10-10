@@ -6,9 +6,7 @@ Description:
 Version: 6.1.0
 """
 
-import json
-import logging
-import os
+import json, datetime,logging,os
 import platform
 import random
 import sys
@@ -19,6 +17,7 @@ from discord.ext import commands, tasks
 from discord.ext.commands import Context
 from dotenv import load_dotenv
 
+import exceptions
 from database import DatabaseManager
 
 if not os.path.isfile(f"{os.path.realpath(os.path.dirname(__file__))}/config.json"):
@@ -27,14 +26,10 @@ else:
     with open(f"{os.path.realpath(os.path.dirname(__file__))}/config.json") as file:
         config = json.load(file)
 
-"""	
-Setup bot intents (events restrictions)
-For more information about intents, please go to the following websites:
-https://discordpy.readthedocs.io/en/latest/intents.html
-https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents
+	
+intents = discord.Intents.default()
 
 
-Default Intents:
 intents.bans = True
 intents.dm_messages = True
 intents.dm_reactions = True
@@ -54,13 +49,12 @@ intents.typing = True
 intents.voice_states = True
 intents.webhooks = True
 
-Privileged Intents (Needs to be enabled on developer portal of Discord), please use them only if you need them:
 intents.members = True
 intents.message_content = True
 intents.presences = True
-"""
 
-intents = discord.Intents.default()
+
+
 
 """
 Uncomment this if you want to use prefix (normal) commands.
@@ -156,7 +150,7 @@ class DiscordBot(commands.Bot):
         The code in this function is executed whenever the bot will start.
         """
         for file in os.listdir(f"{os.path.realpath(os.path.dirname(__file__))}/cogs"):
-            if file.endswith(".py"):
+            if file.endswith(".py") and not file.startswith("test.py"):
                 extension = file[:-3]
                 try:
                     await self.load_extension(f"cogs.{extension}")
@@ -167,12 +161,12 @@ class DiscordBot(commands.Bot):
                         f"Failed to load extension {extension}\n{exception}"
                     )
 
-    @tasks.loop(minutes=1.0)
+    @tasks.loop(seconds=35)
     async def status_task(self) -> None:
         """
         Setup the game status task of the bot.
         """
-        statuses = ["with you!", "with Krypton!", "with humans!"]
+        statuses = ["with you!", "Starfield", "Skyrim", "Fallout 4", "Fallout: New Vegas", "with your heart", "with PrincessSJ!", "with humans!"]
         await self.change_presence(activity=discord.Game(random.choice(statuses)))
 
     @status_task.before_loop
@@ -201,7 +195,19 @@ class DiscordBot(commands.Bot):
                 f"{os.path.realpath(os.path.dirname(__file__))}/database/database.db"
             )
         )
-
+    async def on_member_remove(self,member):
+        channel = discord.utils.get(member.guild.text_channels, name="logs")
+        if channel:
+            embed = discord.Embed(
+                description="Goodbye from each and every one of us...",
+                color=0xE91E63,
+            )
+            embed.set_thumbnail(url=member.avatar)
+            embed.set_author(name=member.name, icon_url=member.avatar)
+            embed.set_footer(text=member.guild, icon_url=member.guild.icon)
+            embed.timestamp = datetime.datetime.utcnow()
+            embed.set_footer(text="This command is brought to you by Terrabot.")
+            await channel.send(embed=embed)
     async def on_message(self, message: discord.Message) -> None:
         """
         The code in this event is executed every time someone sends a message, with or without the prefix
@@ -246,6 +252,7 @@ class DiscordBot(commands.Bot):
                 color=0xE02B2B,
             )
             await context.send(embed=embed)
+        
         elif isinstance(error, commands.NotOwner):
             embed = discord.Embed(
                 description="You are not the owner of the bot!", color=0xE02B2B

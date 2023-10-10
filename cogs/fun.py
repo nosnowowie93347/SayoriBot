@@ -105,6 +105,15 @@ class Fun(commands.Cog, name="fun"):
         :param context: The hybrid command context.
         """
         # This will prevent your bot from stopping everything when doing a web request - see: https://discordpy.readthedocs.io/en/stable/faq.html#how-do-i-make-a-web-request
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 "https://uselessfacts.jsph.pl/random.json?language=en"
@@ -129,6 +138,15 @@ class Fun(commands.Cog, name="fun"):
 
         :param context: The hybrid command context.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         buttons = Choice()
         embed = discord.Embed(description="What is your bet?", color=0xBEBEFE)
         message = await context.send(embed=embed, view=buttons)
@@ -155,6 +173,15 @@ class Fun(commands.Cog, name="fun"):
 
         :param context: The hybrid command context.
         """
+        embed2 = discord.Embed(
+            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+        )
+        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+        if user_is_blacklisted:
+
+            print("here!")
+            await context.send(embed=embed2)
+            return
         view = RockPaperScissorsView()
         await context.send("Please make your choice", view=view)
 
