@@ -1,7 +1,6 @@
 # SayoriBot: An updated version of my original bot, Terrabot.
 
-<p align="center">
-  <a href="https://discord.gg/mTBrXyWxAF"><img src="https://img.shields.io/discord/739934735387721768?logo=discord"></a>
+
 <p align="center">
   More info about the template i used for this repository
   <a href="https://github.com/kkrypt0nn/Python-Discord-Bot-Template/releases"><img src="https://img.shields.io/github/v/release/kkrypt0nn/Python-Discord-Bot-Template"></a>
