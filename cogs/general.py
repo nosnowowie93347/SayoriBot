@@ -69,6 +69,35 @@ class General(commands.Cog, name="general"):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
+    @commands.hybrid_command(name="hostinfo")
+    @commands.guild_only()
+    async def hostinfo(self,ctx):
+        """
+        A useful command that displays bot statistics.
+        """
+        pythonVersion = platform.python_version()
+        dpyVersion = discord.__version__
+        serverCount = len(self.bot.guilds)
+        memberCount = len(set(self.bot.get_all_members()))
+
+        embed = discord.Embed(
+            title=f"{self.bot.user.name} Stats",
+            description="\uFEFF",
+            colour=ctx.author.colour,
+            timestamp=ctx.message.created_at,
+        )
+
+        embed.add_field(name="Python Version:", value=pythonVersion)
+        embed.add_field(name="Discord.Py Version", value=dpyVersion)
+        embed.add_field(name="Total Guilds:", value=serverCount)
+        embed.add_field(name="Total Users:", value=memberCount)
+        embed.add_field(name="Bot Developers:", value="<@466778567905116170>")
+
+        embed.set_footer(text=f"Made By | {self.bot.user.name}")
+        embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar)
+
+        await ctx.send(embed=embed)
+
     @commands.hybrid_command(
         name="help", description="List all commands the bot has loaded."
     )
