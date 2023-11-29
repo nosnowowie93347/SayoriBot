@@ -27,7 +27,7 @@ class UnitConverter(Converter):
         return new_units
 
 
-class Weather(commands.Cog,name="weather"):
+class Weather(commands.Cog, name="weather"):
     """Get weather data from https://openweathermap.org"""
 
     def __init__(self, bot):
