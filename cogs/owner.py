@@ -13,6 +13,7 @@ from discord.ext.commands import Context
 
 
 class Owner(commands.Cog, name="owner"):
+    """This docstring is to force pylint to shut up about a missing docstring."""
     def __init__(self, bot) -> None:
         self.bot = bot
 

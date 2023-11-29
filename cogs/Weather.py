@@ -120,9 +120,7 @@ class Weather(commands.Cog, name="weather"):
             params["lon"] = str(lon)
         else:
             params["q"] = str(location)
-        url = "https://api.openweathermap.org/data/2.5/weather?{0}".format(
-            urlencode(params)
-        )
+        url = f"https://api.openweathermap.org/data/2.5/weather?{urlencode(params)}"
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
                 data = await resp.json()
