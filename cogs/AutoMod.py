@@ -8,7 +8,7 @@ profanity.load_censor_words_from_file("./data/profanity.txt")
 
 
 class AutoMod(Cog):
-
+  """This docstring is to force pylint to shut up about a missing docstring."""
   def __init__(self, bot):
     self.bot = bot
 

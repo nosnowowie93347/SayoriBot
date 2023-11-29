@@ -1,8 +1,9 @@
 import base64
 import binascii
 import logging
-import re, discord
 import typing as t
+import re, discord
+
 
 from discord import Colour, Message, NotFound
 from discord.ext.commands import Cog, Bot

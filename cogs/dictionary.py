@@ -1,10 +1,5 @@
-import aiohttp
-import discord
-import contextlib
+import discord, re, logging, contextlib, json, aiohttp
 from bs4 import BeautifulSoup
-import json
-import logging
-import re
 from discord.ext import commands
 from discord.ext.commands import Bot
 from .test import pagify

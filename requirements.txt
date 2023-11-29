@@ -3,3 +3,6 @@ aiosqlite
 discord.py
 python-dotenv
 better-profanity
+flask
+beautifulsoup4
+requests

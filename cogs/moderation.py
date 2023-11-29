@@ -15,6 +15,7 @@ from discord.ext.commands import Context
 
 
 class Moderation(commands.Cog, name="moderation"):
+    """This docstring is to force pylint to shut up about a missing docstring."""
     def __init__(self, bot) -> None:
         self.bot = bot
     @commands.hybrid_command(

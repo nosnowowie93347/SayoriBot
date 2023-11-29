@@ -12,6 +12,7 @@ from discord.ext.commands import Context
 
 # Here we name the cog and create a new class for the cog.
 class Template(commands.Cog, name="template"):
+    """This docstring is to force pylint to shut up about a missing docstring."""
     def __init__(self, bot) -> None:
         self.bot = bot
 

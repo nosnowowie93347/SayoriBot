@@ -38,7 +38,7 @@ class Owner(commands.Cog, name="owner"):
             )
             await context.send(embed=embed)
             return
-        elif scope == "guild":
+        if scope == "guild":
             context.bot.tree.copy_global_to(guild=context.guild)
             await context.bot.tree.sync(guild=context.guild)
             embed = discord.Embed(
@@ -77,7 +77,7 @@ class Owner(commands.Cog, name="owner"):
             )
             await context.send(embed=embed)
             return
-        elif scope == "guild":
+        if scope == "guild":
             context.bot.tree.clear_commands(guild=context.guild)
             await context.bot.tree.sync(guild=context.guild)
             embed = discord.Embed(
