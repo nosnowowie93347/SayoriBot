@@ -109,6 +109,8 @@ celerybeat.pid
 .venv
 env/
 venv/
+discord.log
+*.log
 ENV/
 env.bak/
 venv.bak/
