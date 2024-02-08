@@ -148,7 +148,7 @@ class DiscordBot(commands.Bot):
         The code in this function is executed whenever the bot will start.
         """
         for file in os.listdir(f"{os.path.realpath(os.path.dirname(__file__))}/cogs"):
-            if file.endswith(".py") and not file.startswith("test.py"):
+            if file.endswith(".py") and not file.startswith("test.py") and not file.startswith("data.py") and not file.startswith("test2.py"):
                 extension = file[:-3]
                 try:
                     await self.load_extension(f"cogs.{extension}")

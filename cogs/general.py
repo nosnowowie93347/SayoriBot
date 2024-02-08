@@ -8,7 +8,9 @@ Version: 6.1.0
 
 import platform
 import random
-
+from discord.utils import get, format_dt
+from discord import app_commands
+from typing import Optional, Union
 import aiohttp
 import discord
 from discord import app_commands
@@ -342,46 +344,56 @@ class General(commands.Cog, name="general"):
         embed.set_footer(text=f"The question was: {question}")
         await context.send(embed=embed)
 
-    @commands.hybrid_command(
-        name="bitcoin",
-        description="Get the current price of bitcoin.",
-    )
-    async def bitcoin(self, context: Context) -> None:
-        """
-        Get the current price of bitcoin.
+    # @commands.hybrid_command(
+    #     name="bitcoin",
+    #     description="Get the current price of bitcoin.",
+    # )
+    # async def bitcoin(self, context: Context) -> None:
+    #     """
+    #     Get the current price of bitcoin.
 
-        :param context: The hybrid command context.
-        """
-        # This will prevent your bot from stopping everything when doing a web request - see: https://discordpy.readthedocs.io/en/stable/faq.html#how-do-i-make-a-web-request
-        embed2 = discord.Embed(
-            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
-        )
-        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
-        if user_is_blacklisted:
+    #     :param context: The hybrid command context.
+    #     """
+    #     # This will prevent your bot from stopping everything when doing a web request - see: https://discordpy.readthedocs.io/en/stable/faq.html#how-do-i-make-a-web-request
+    #     # embed2 = discord.Embed(
+    #     #     title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
+    #     # )
+    #     # user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
+    #     # if user_is_blacklisted:
 
-            print("here!")
-            await context.send(embed=embed2)
-            return
-        async with aiohttp.ClientSession() as session:
-            async with session.get(
-                "https://api.coindesk.com/v1/bpi/currentprice/BTC.json"
-            ) as request:
-                if request.status == 200:
-                    data = await request.json(
-                        content_type="application/javascript"
-                    )  # For some reason the returned content is of type JavaScript
-                    embed = discord.Embed(
-                        title="Bitcoin price",
-                        description=f"The current price is {data['bpi']['USD']['rate']} :dollar:",
-                        color=0xBEBEFE,
-                    )
-                else:
-                    embed = discord.Embed(
-                        title="Error!",
-                        description="There is something wrong with the API, please try again later",
-                        color=0xE02B2B,
-                    )
-                await context.send(embed=embed)
+    #     #     print("here!")
+    #     #     await context.send(embed=embed2)
+    #     #     return
+    #     async with aiohttp.ClientSession() as session:
+    #         async with session.get(
+    #             "https://api.coindesk.com/v1/bpi/currentprice/BTC.json"
+    #         ) as request:
+    #             if request.status == 200:
+    #                 data = await request.json(
+    #                     content_type="application/javascript"
+    #                 )  # For some reason the returned content is of type JavaScript
+    #                 embed = discord.Embed(
+    #                     title="Bitcoin price",
+    #                     description=f"The current price is {data['bpi']['USD']['rate']} :dollar:",
+    #                     color=0xBEBEFE,
+    #                 )
+    #             else:
+    #                 embed = discord.Embed(
+    #                     title="Error!",
+    #                     description="There is something wrong with the API, please try again later",
+    #                     color=0xE02B2B,
+    #                 )
+    #             await context.send(embed=embed)
+
+    @commands.hybrid_command(name="banner", description="Display the banner.")
+    async def banner(self, ctx: Context, user: Optional[Union[discord.Member, discord.User]]) -> None:
+        if not user: 
+            user = ctx.author
+        user = await self.bot.fetch_user(user.id)
+        if banner := user.banner:
+            await ctx.send(banner.url)
+        else:
+            await ctx.send("This user doesn't have a banner.")
 
 
 async def setup(bot) -> None:
