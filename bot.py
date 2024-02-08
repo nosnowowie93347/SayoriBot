@@ -10,10 +10,10 @@ import json, datetime, logging, os
 import platform
 import random
 import sys
-from keep_alive import keep_alive
 
 import aiosqlite
 import discord
+from discord import app_commands
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
 from dotenv import load_dotenv
@@ -112,13 +112,15 @@ logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
 
+
 class DiscordBot(commands.Bot):
     def __init__(self) -> None:
         super().__init__(
             command_prefix=commands.when_mentioned_or(config["prefix"]),
             intents=intents,
-            help_command=None,
+            help_command=None
         )
+        self.synced=False
         """
         This creates custom bot variables so that we can access these variables in cogs more easily.
 
@@ -181,6 +183,7 @@ class DiscordBot(commands.Bot):
         """
         await self.wait_until_ready()
 
+
     async def setup_hook(self) -> None:
         """
         This will just be executed when the bot starts the first time.
@@ -194,6 +197,10 @@ class DiscordBot(commands.Bot):
         self.logger.info("-------------------")
         await self.init_db()
         await self.load_cogs()
+        if not self.synced:
+            await self.tree.sync()
+            self.synced = True
+            print("Refresh commands")
         self.status_task.start()
         self.database = DatabaseManager(
             connection=await aiosqlite.connect(
@@ -302,6 +309,6 @@ class DiscordBot(commands.Bot):
 
 
 load_dotenv()
-keep_alive()
 bot = DiscordBot()
+
 bot.run(os.getenv("TOKEN"))

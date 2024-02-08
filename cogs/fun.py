@@ -6,7 +6,7 @@ A simple template to start to code your own and personalized discord bot in Pyth
 Version: 6.1.0
 """
 
-import random, re, json, os, io, requests
+import random, re, json, os, io, requests,base64
 import aiohttp
 import discord
 from bs4 import BeautifulSoup
@@ -220,7 +220,43 @@ class Fun(commands.Cog, name="fun"):
 					return
 			view = RockPaperScissorsView()
 			await context.send("Please make your choice", view=view)
+	@commands.hybrid_command(name='minecraft',aliases=["mcprofile", "mcinfo"])
+	async def minecraft(self, context: Context, username):
+		"""
+		Shows MC account info, skin and username history
+		"""
+		try:
+			uuid = requests.get(
+				"https://api.mojang.com/users/profiles/minecraft/{}".format(username)
+			).json()["id"]
 
+			url = json.loads(
+				base64.b64decode(
+					requests.get(
+						"https://sessionserver.mojang.com/session/minecraft/profile/{}".format(
+							uuid
+						)
+					).json()["properties"][0]["value"]
+				).decode("utf-8")
+			)["textures"]["SKIN"]["url"]
+
+			names = requests.get(
+				"https://api.mojang.com/user/profiles/{}/names".format(uuid)
+			).json()
+			history = "**Name History:**\n"
+			for name in reversed(names):
+				history += name[0] + "\n"
+
+			await context.send(
+				"**Username: `{}`**\n**Skin: {}**\n**UUID: {}**".format(
+					username, url, uuid
+				)
+			)
+			await context.send(history)
+		except ValueError as e:
+			await context.send(e)
+			await asyncio.sleep(2)
+			await context.send("This means the profile wasn't found...")
 
 async def setup(bot) -> None:
 	await bot.add_cog(Fun(bot))

@@ -1,14 +1,16 @@
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Logged in as Sayori Bot
-[2023-11-28 23:18:01] [INFO    ] discord_bot: discord.py API version: 2.3.2
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Python version: 3.10.11
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Running on: Linux 6.2.0-1018-gcp (posix)
-[2023-11-28 23:18:01] [INFO    ] discord_bot: -------------------
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Loaded extension 'dictionary'
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Loaded extension 'general'
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Loaded extension 'moderation'
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Loaded extension 'owner'
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Loaded extension 'template'
-[2023-11-28 23:18:01] [INFO    ] discord_bot: Loaded extension 'Weather'
-[2023-11-28 23:18:02] [INFO    ] discord_bot: Loaded extension 'fun'
-[2023-11-28 23:18:02] [INFO    ] discord_bot: Loaded extension 'AutoMod'
-[2023-11-28 23:18:02] [INFO    ] discord_bot: Loaded extension 'token-remover'
+[2024-02-07 17:02:05] [INFO    ] discord_bot: Logged in as Sayori Bot
+[2024-02-07 17:02:05] [INFO    ] discord_bot: discord.py API version: 2.0.1
+[2024-02-07 17:02:05] [INFO    ] discord_bot: Python version: 3.12.1
+[2024-02-07 17:02:05] [INFO    ] discord_bot: Running on: Windows 10 (nt)
+[2024-02-07 17:02:05] [INFO    ] discord_bot: -------------------
+[2024-02-07 17:02:05] [INFO    ] discord_bot: Loaded extension 'AutoMod'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'dictionary'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'fun'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'general'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'Help'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'moderation'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'owner'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'template'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'token-remover'
+[2024-02-07 17:02:06] [INFO    ] discord_bot: Loaded extension 'Weather'
+[2024-02-07 17:02:51] [INFO    ] discord_bot: Executed userinfo command in Pink's New Bot Testing (ID: 830222901143535677) by _princessellie#0 (ID: 714605513362636852)

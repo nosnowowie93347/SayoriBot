@@ -98,38 +98,40 @@ class General(commands.Cog, name="general"):
         await ctx.send(embed=embed)
 
     @commands.hybrid_command(
-        name="help", description="List all commands the bot has loaded."
-    )
-    
-    async def help(self, context: Context) -> None:
-        prefix = self.bot.config["prefix"]
-        embed2 = discord.Embed(
-            title="Command failed!", description="Haha you're blacklisted, so you can't use this command.:", color=0xBEBEFE
-        )
-        user_is_blacklisted = await self.bot.database.is_blacklisted(context.author.id)
-        if user_is_blacklisted:
+        name='userinfo',
+        description='Get info on a user')
+    async def userinfo(self, context: Context, *, member: discord.Member=None):
+        """
+        Get some useful (or not) information about the bot.
 
-            print("here!")
-            await context.send(embed=embed2)
-            return
-        embed = discord.Embed(
-            title="Help", description="List of available commands:", color=0xBEBEFE
-        )
-        for i in self.bot.cogs:
-            if i == "owner" and not (await self.bot.is_owner(context.author)):
-                continue
-            cog = self.bot.get_cog(i.lower())
-            commands = cog.get_commands()
-            data = []
-            for command in commands:
-                description = command.description.partition("\n")[0]
-                data.append(f"{prefix}{command.name} - {description}")
-            help_text = "\n".join(data)
-            embed.add_field(
-                name=i.capitalize(), value=f"```{help_text}```", inline=False
-            )
-        await context.send(embed=embed)
+        :param user: The user to get info for.
+        """
+        if member is None:
+            member = context.author
+        elif member is not None:
+            member = member
 
+        info_embed = discord.Embed(title=f"{member.name}'s User Info", description="Information about this user")
+        info_embed.set_thumbnail(url=member.avatar)
+        info_embed.add_field(name="Name: ", value=member.name)
+        info_embed.add_field(name="web status", value=member.web_status)
+        info_embed.add_field(name="On Mobile? ", value=member.is_on_mobile())
+        info_embed.add_field(name="True Mobile Status ", value=member.mobile_status)
+        info_embed.add_field(name="Status: ", value=member.status)
+        info_embed.add_field(name="Desktop Status: ", value=member.desktop_status)
+        info_embed.add_field(name="roles: ", value=member.roles)
+        info_embed.add_field(name="Joined this Server: ", value=member.joined_at)
+        info_embed.add_field(name="Nickname", value=member.nick)
+        info_embed.add_field(name="Highest Role: ", value=member.top_role)
+        info_embed.add_field(name="Avatar: ", value=member.avatar)
+        info_embed.add_field(name="Created At: ", value=member.created_at.__format__("%A, %d, %B %Y @ %H:%M:%S"))
+        info_embed.add_field(name="Discriminator: ", value=member.discriminator)
+        info_embed.add_field(name="Bot?", value=member.bot)
+        info_embed.add_field(name="ID: ", value=member.id)
+        info_embed.add_field(name="Current Activities", value=member.activities)
+        info_embed.add_field(name="Mentionable String", value=member.mention)
+
+        await context.send(embed=info_embed)
     @commands.hybrid_command(
         name="botinfo",
         description="Get some useful (or not) information about the bot.",
