@@ -70,7 +70,7 @@ class General(commands.Cog, name="general"):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @commands.hybrid_command(name="hostinfo")
+    @commands.hybrid_command(name="hostinfo",description="Information about the host's computer")
     @commands.guild_only()
     async def hostinfo(self,ctx):
         """
@@ -165,7 +165,22 @@ class General(commands.Cog, name="general"):
         embed.add_field(
             name="Prefix:",
             value=f"/ (Slash Commands) or {self.bot.config['prefix']} for normal commands",
-            inline=False,
+            inline=True,
+        )
+        embed.add_field(
+            name="Servers:",
+            value=f"{context.bot.guilds}",
+            inline=True
+        )
+        embed.add_field(
+            name="Owner:",
+            value=f"<@{context.bot.owner_id}>",
+            inline=True
+        )
+        embed.add_field(
+            name="Bot ID:",
+            value=f"{context.bot.application_id}",
+            inline=True
         )
         embed.set_footer(text=f"Requested by {context.author.id}")
         await context.send(embed=embed)
@@ -174,6 +189,7 @@ class General(commands.Cog, name="general"):
         name="serverinfo",
         description="Get some useful (or not) information about the server.",
     )
+    @commands.cooldown(1, 14, commands.BucketType.user)
     async def serverinfo(self, context: Context) -> None:
         """
         Get some useful (or not) information about the server.
@@ -386,6 +402,7 @@ class General(commands.Cog, name="general"):
     #             await context.send(embed=embed)
 
     @commands.hybrid_command(name="banner", description="Display the banner.")
+    @commands.cooldown(1, 14, commands.BucketType.user)
     async def banner(self, ctx: Context, user: Optional[Union[discord.Member, discord.User]]) -> None:
         if not user: 
             user = ctx.author
@@ -394,7 +411,51 @@ class General(commands.Cog, name="general"):
             await ctx.send(banner.url)
         else:
             await ctx.send("This user doesn't have a banner.")
+    @commands.hybrid_command(name="emojiinfo", aliases=["ei"])
+    @commands.cooldown(1, 14, commands.BucketType.user)
+    async def emoji_info(self, ctx, emoji: discord.Emoji = None):
+        if not emoji:
+            await ctx.invoke(self.bot.get_command("help"), entity="emojiinfo")
 
+        try:
+            emoji = await emoji.guild.fetch_emoji(emoji.id)
+        except discord.ext.commands.errors.EmojiNotFound:
+            return await ctx.reply("I couldn't find this emoji in the givin guild.")
+
+        is_managed = "Yes" if emoji.managed else "No"
+        is_animated = "Yes" if emoji.animated else "No"
+        requires_colons = "Yes" if emoji.require_colons else "No"
+        creation_time = emoji.created_at.strftime("%I:%M %p %B %d, %Y")
+        can_use_emoji = (
+            "Everyone"
+            if not emoji.roles
+            else " ".join(role.name for role in emoji.roles)
+        )
+
+        description = f"""
+    **General:**
+    **- Name:** {emoji.name}
+    **- Id:** {emoji.id}
+    **- URL:** [Link To Emoji]({emoji.url})
+    **- Author:** {emoji.user.mention}
+    **- Time Created:** {creation_time}
+    **- Usable by:** {can_use_emoji}
+    
+    **Other:**
+    **- Animated:** {is_animated}
+    **- Managed:** {is_managed}
+    **- Requires Colons:** {requires_colons}
+    **- Guild Name:** {emoji.guild.name}
+    **- Guild Id:** {emoji.guild.id}
+    """
+
+        embed = discord.Embed(
+            title=f"**Emoji Information for:** `{emoji.name}`",
+            description=description,
+            colour=0xADD8E6,
+        )
+        embed.set_thumbnail(url=emoji.url)
+        await ctx.send(embed=embed)
 
 async def setup(bot) -> None:
     await bot.add_cog(General(bot))
