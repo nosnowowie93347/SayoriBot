@@ -7,7 +7,6 @@ Version: 6.1.0
 """
 
 import discord, requests,logging, os, platform, json, textwrap, re, random, time, io
-import matplotlib.pyplot as plt
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -77,24 +76,6 @@ class Owner(commands.Cog, name="owner"):
             description="The scope must be `global` or `guild`.", color=0xE02B2B
         )
         await context.send(embed=embed)
-    @commands.hybrid_command(name="statistics", description="Display statistics about the guild.")
-    @commands.guild_only()
-    async def stat(self, ctx: Context) -> None:
-        """Show a graphic pie about the server's members."""
-        plt.clf()
-        ax, data, colors = plt.subplot(), statServer(ctx.guild.members), ["#747f8d","#f04747","#faa81a","#43b582"] # type: ignore
-        ax.pie([data["offline"], data["dnd"], data["idle"], data["online"]], colors=colors, startangle=-40, wedgeprops=dict(width=0.5))
-        leg = ax.legend(["Offline","dnd","idle","Online"],frameon=False, loc="lower center", ncol=5)
-        for color,text in zip(colors,leg.get_texts()):
-            text.set_color(color)
-        image_binary = io.BytesIO()
-        plt.savefig(image_binary, transparent=True)
-        image_binary.seek(0)
-        
-        embed = discord.Embed(title=f"Current server stats ({data['members']})",description=f"<:offline_status:1204963635601084476> : **`{data['offline']}`** (Offline)\n<:Idle:1204963976124043276> : **`{data['idle']}`** (AFK)\n<:DoNotDisturb:1204963929110093868> : **`{data['dnd']}`** (dnd)\n<:online:698246924465340497> : **`{data['online']}`** (Online)\n<:Discord_Streaming:1204964441850904596> : **`{data['streaming']}`** (Streaming)\n📱 : **`{data['mobile']}`** (on mobile)\n🤖 : **`{data['bot']}`** (Robot)")
-        embed.set_image(url="attachment://stat.png")
-        embed.set_footer(text=f"Requested by : {ctx.author} at {time.strftime('%H:%M:%S')}", icon_url=ctx.author.display_avatar.url)
-        await ctx.send(file=discord.File(fp=image_binary, filename="stat.png"), embed=embed)
 
     @commands.command(
         name="unsync",
