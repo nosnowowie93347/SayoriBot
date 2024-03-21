@@ -20,6 +20,7 @@ class Dictionary(commands.Cog,name="dictionary"):
         self.session = aiohttp.ClientSession()
 
     @commands.hybrid_command()
+    @commands.cooldown(1, 14, commands.BucketType.user)
     async def define(self, ctx, *, word: str):
         """Displays definitions of a given word."""
         search_msg = await ctx.send("Searching...")
@@ -76,7 +77,7 @@ class Dictionary(commands.Cog,name="dictionary"):
             out[name] = meanings
         return out
 
-    @commands.command(enabled=False,hidden=True)
+    @commands.hybrid_command(enabled=False,hidden=True)
     async def antonym(self, ctx, *, word: str):
         """Displays antonyms for a given word."""
         search_term = word.split(" ", 1)[0]
@@ -90,7 +91,7 @@ class Dictionary(commands.Cog,name="dictionary"):
         for page in pagify(msg, delims=["\n"]):
             await ctx.send(page)
 
-    @commands.command(enabled=False,hidden=True)
+    @commands.hybrid_command(enabled=False,hidden=True)
     async def synonym(self, ctx, *, word: str):
         """Displays synonyms for a given word."""
         search_term = word.split(" ", 1)[0]

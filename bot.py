@@ -10,13 +10,16 @@ import json, datetime, logging, os
 import platform
 import random
 import sys
-
+import motor.motor_asyncio
 import aiosqlite
 import discord
 from discord import app_commands
 from discord.ext import commands, tasks
+from pathlib import Path
 from discord.ext.commands import Context
 from dotenv import load_dotenv
+from SpamFilter import AntiSpam
+
 
 from database import DatabaseManager
 
@@ -110,17 +113,17 @@ file_handler.setFormatter(file_handler_formatter)
 # Add the handlers
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
-
-
+cwd = Path(__file__).parents[0]
+cwd = str(cwd)
 
 class DiscordBot(commands.Bot):
     def __init__(self) -> None:
         super().__init__(
             command_prefix=commands.when_mentioned_or(config["prefix"]),
             intents=intents,
-            help_command=None
+            help_command=None,
         )
-        self.synced=False
+        self.synced = False
         """
         This creates custom bot variables so that we can access these variables in cogs more easily.
 
@@ -147,8 +150,37 @@ class DiscordBot(commands.Bot):
         """
         The code in this function is executed whenever the bot will start.
         """
+        for file in os.listdir(cwd):
+            if (
+                file.endswith(".py")
+                and not file.startswith("safemodels.py")
+                and not file.startswith("_")
+                and not file.startswith("image.py")
+                and not file.startswith("bot.py")
+                and not file.startswith("common_variables.py")
+                and not file.startswith("embeds.py")
+                and not file.startswith("menus.py")
+                and not file.startswith("utilities.py")
+                and not file.startswith("xphelp.py")
+                and not file.startswith("embedutils.py")
+                and not file.startswith("akimenu.py")
+            ):
+                extension = file[:-3]
+                try:
+                    await self.load_extension(f"{extension}")
+                    self.logger.info(f"Loaded extension '{extension}'")
+                except Exception as e:
+                    exception = f"{type(e).__name__}: {e}"
+                    self.logger.error(
+                        f"Failed to load extension {extension}\n{exception}"
+                    )
         for file in os.listdir(f"{os.path.realpath(os.path.dirname(__file__))}/cogs"):
-            if file.endswith(".py") and not file.startswith("test.py") and not file.startswith("data.py") and not file.startswith("test2.py"):
+            if (
+                file.endswith(".py")
+                and not file.startswith("test.py")
+                and not file.startswith("data.py")
+                and not file.startswith("test2.py")
+            ):
                 extension = file[:-3]
                 try:
                     await self.load_extension(f"cogs.{extension}")
@@ -182,7 +214,6 @@ class DiscordBot(commands.Bot):
         Before starting the status changing task, we make sure the bot is ready
         """
         await self.wait_until_ready()
-
 
     async def setup_hook(self) -> None:
         """
@@ -218,7 +249,7 @@ class DiscordBot(commands.Bot):
             embed.set_thumbnail(url=member.avatar)
             embed.set_author(name=member.name, icon_url=member.avatar)
             embed.set_footer(text=member.guild, icon_url=member.guild.icon)
-            embed.timestamp = datetime.datetime.utcnow()
+            embed.timestamp = datetime.datetime.now(datetime.UTC)
             embed.set_footer(text="This command is brought to you by Terrabot.")
             await channel.send(embed=embed)
 
@@ -228,6 +259,7 @@ class DiscordBot(commands.Bot):
 
         :param message: The message that was sent.
         """
+        
         if message.author == self.user or message.author.bot:
             return
         await self.process_commands(message)
@@ -310,5 +342,8 @@ class DiscordBot(commands.Bot):
 
 load_dotenv()
 bot = DiscordBot()
+bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(config["connection_url"]))
+bot.db = bot.mongo["Cluster0"]
+bot.connection = bot.db["level"]
 TOKEN = os.getenv("TOKEN")
 bot.run(TOKEN)
