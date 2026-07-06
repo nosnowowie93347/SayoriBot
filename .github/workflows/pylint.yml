@@ -23,7 +23,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
+    - name: Run Pylint
+      run: |
+        pip install pylint pylint-exit
+        pylint $(git ls-files '*.py') || pylint-exit $?
+    
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
