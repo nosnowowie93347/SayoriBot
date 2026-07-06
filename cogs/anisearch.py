@@ -1,10 +1,13 @@
-import datetime, re, json, random
+import datetime
+import re
+import json
+import random
 import aiohttp
 import discord
 from discord.ext import commands
 from .test import menu, DEFAULT_CONTROLS
 from discord import Embed, Message, NotFound
-from discord.ext.commands import Cog, Bot
+from discord.ext.commands import Cog
 
 SEARCH_ANIME_MANGA_QUERY = """
 query ($id: Int, $page: Int, $search: String, $type: MediaType) {
@@ -123,7 +126,7 @@ query ($id: Int, $page: Int, $search: String) {
 """
 
 
-class AniSearch(commands.Cog):
+class AniSearch(Cog):
     """Search for anime, manga, characters and users using Anilist"""
 
     def __init__(self, bot):
