@@ -6,7 +6,10 @@ Simple template to start to code your own and personalized discord bot in Python
 Version: 6.1.0
 """
 
-import json, datetime, logging, os
+import logging
+import os
+import json
+import datetime
 import platform
 import random
 import sys
@@ -115,6 +118,7 @@ logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
+
 
 class DiscordBot(commands.Bot):
     def __init__(self) -> None:
@@ -259,7 +263,7 @@ class DiscordBot(commands.Bot):
 
         :param message: The message that was sent.
         """
-        
+
         if message.author == self.user or message.author.bot:
             return
         await self.process_commands(message)

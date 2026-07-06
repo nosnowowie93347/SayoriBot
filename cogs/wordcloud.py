@@ -4,7 +4,6 @@ import discord
 import functools
 import re
 from io import BytesIO
-import numpy as np
 import os
 from PIL import Image
 from discord.ext import commands

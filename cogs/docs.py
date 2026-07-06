@@ -191,7 +191,7 @@ class Docs(commands.Cog, name="Documentation"):
                 await ctx.send(
                     embed=discord.Embed.from_dict(
                         {
-                            "title": "'It'll be finished before Mandroc still Connor' ~ Kindly, Pyro Devs",
+                            "title": "'Istg eventually I'll actually put something fun here'",
                             "description": "Primary dev:\n<@330566541156417536>\nDevs:\n"
                             "<@271612318947868673>\n<@686846374737739797> ",
                             "footer": {"text": "Imagine including easter eggs"},

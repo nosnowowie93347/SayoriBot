@@ -10,11 +10,11 @@ discordpy-antispam
 dnspython
 emoji
 googletrans
-mendeleev
 motor
-numpy
 pandas
+PyYAML
 python-dotenv
+wordcloud
 requests
 praw
 fonttools
