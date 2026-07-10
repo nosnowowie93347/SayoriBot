@@ -24,8 +24,8 @@ Here is an explanation of what everything is:
 
 | Variable                  | What it is                                     |
 | ------------------------- | ---------------------------------------------- |
-| YOUR_BOT_PREFIX_HERE      | The prefix you want to use for normal commands |
-| YOUR_BOT_INVITE_LINK_HERE | The link to invite the bot                     |
+| connection_url            | Your MongoDB connection url                    |
+| prefix                    | command prefix                                 |
 
 ### `.env` file
 
