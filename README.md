@@ -15,6 +15,22 @@
 
 To set up the bot it was made as simple as possible.
 
+## FIRST STEP
+
+create a python venv named .venv:
+```windows```
+``python -m venv .venv``
+``.venv\Scripts\activate.bat``
+
+```linux```
+``
+sudo apt update
+sudo apt install python3-venv
+cd /path/to/your/project
+python3 -m venv .venv
+source .venv/bin/activate
+``
+
 ### `config.json` file
 
 There is [`config.json`](config.json) file where you can put the
