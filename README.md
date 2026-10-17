@@ -20,8 +20,10 @@ To set up the bot it was made as simple as possible.
 create a python venv named .venv:
 
 windows
-```python -m venv .venv```
-```.venv\Scripts\activate.bat```
+```
+python -m venv .venv
+.venv\Scripts\activate.bat
+```
 
 linux
 ```
