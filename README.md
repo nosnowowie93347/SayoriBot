@@ -18,18 +18,18 @@ To set up the bot it was made as simple as possible.
 ## FIRST STEP
 
 create a python venv named .venv:
-``windows``
-``python -m venv .venv``
-``.venv\Scripts\activate.bat``
+windows
+```python -m venv .venv```
+```.venv\Scripts\activate.bat```
 
-``linux``
-``
+linux
+```
 sudo apt update
 sudo apt install python3-venv
 cd /path/to/your/project
 python3 -m venv .venv
 source .venv/bin/activate
-``
+```
 
 ### `config.json` file
 
