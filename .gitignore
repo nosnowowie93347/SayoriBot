@@ -106,6 +106,8 @@ celerybeat.pid
 
 # Environments
 .env
+.env.saved
+.env.save
 config.json
 .config.json
 .venv
